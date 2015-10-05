@@ -1,5 +1,7 @@
 package com.javarockstars.mpp.structures;
 
+import java.util.Objects;
+
 /**
  * Author: dedocibula
  * Created on: 5.10.2015.
@@ -26,12 +28,12 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
     }
 
     @Override
-    public boolean delete(Node<K, V> entry) {
+    public boolean delete(Object key) {
         boolean snip;
         while (true) {
-            Window<K, V> window = find(entry.key);
+            Window<K, V> window = find(key);
             Node<K, V> prev = window.prev, curr = window.curr;
-            if (!entry.key.equals(curr.key))
+            if (!key.equals(curr.key))
                 return false;
             Node<K, V> succ = curr.next.getReference();
             snip = curr.next.compareAndSet(succ, succ, false, true);
@@ -43,17 +45,15 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
     }
 
     @Override
-    public boolean contains(Node<K, V> entry) {
+    public boolean contains(Object key) {
         boolean[] marked = {false};
-        Node<K, V> curr = head.next.getReference();
-        do {
-            curr = curr.next.getReference();
-            Node<K, V> succ = curr.next.get(marked);
-        } while (curr.key != null && !curr.key.equals(entry.key));
-        return (curr.key != null && curr.key.equals(entry.key) && !marked[0]);
+        Node<K, V> curr = head.next.get(marked);
+        while (curr.key != null && !curr.key.equals(key))
+            curr = curr.next.get(marked);
+        return (curr.key != null && curr.key.equals(key) && !marked[0]);
     }
 
-    private Window<K, V> find(final K key) {
+    private Window<K, V> find(final Object key) {
         Node<K, V> prev, curr, succ;
         boolean[] marked = {false};
         boolean snip;
