@@ -1,7 +1,5 @@
 package com.javarockstars.mpp.api;
 
-import java.util.Map;
-
 /**
  * Author: dedocibula
  * Created on: 5.10.2015.

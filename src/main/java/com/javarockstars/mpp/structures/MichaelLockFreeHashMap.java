@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created on: 5.10.2015.
  */
 public class MichaelLockFreeHashMap<K, V> implements LockFreeMap<K, V> {
-    private static final int DEFAULT_CAPACITY = 16;
+    private static final int DEFAULT_CAPACITY = 100;
     private static final int HASH_BITS = 0x7fffffff;
 
     private final int capacity;

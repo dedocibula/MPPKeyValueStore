@@ -20,6 +20,11 @@ class Node<K, V> implements Map.Entry<K, V> {
         this.value = value;
     }
 
+    Node(int hash, K key, V value, Node<K, V> next) {
+        this(hash, key, value);
+        setNext(next);
+    }
+
     @Override
     public K getKey() {
         return key;
@@ -36,7 +41,6 @@ class Node<K, V> implements Map.Entry<K, V> {
     }
 
     void setNext(Node<K, V> next) {
-        Objects.requireNonNull(next);
         this.next = new AtomicMarkableReference<>(next, false);
     }
 

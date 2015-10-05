@@ -8,8 +8,8 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
     private Node<K, V> head;
 
     LockFreeKVList() {
-        this.head = new Node<>(Integer.MIN_VALUE, null, null);
-        this.head.setNext(new Node<>(Integer.MAX_VALUE, null, null));
+        Node<K, V> last = new Node<>(Integer.MAX_VALUE, null, null, null);
+        this.head = new Node<>(Integer.MIN_VALUE, null, null, last);
     }
 
     @Override
