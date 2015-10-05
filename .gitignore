@@ -20,3 +20,5 @@ nb-configuration
 # Maven
 log/
 target/
+
+bin/
