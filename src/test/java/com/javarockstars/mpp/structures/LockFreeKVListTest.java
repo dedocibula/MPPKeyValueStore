@@ -22,4 +22,9 @@ public class LockFreeKVListTest {
     public void testContains() throws Exception {
 
     }
+
+    @Test
+    public void testGet() throws Exception {
+
+    }
 }

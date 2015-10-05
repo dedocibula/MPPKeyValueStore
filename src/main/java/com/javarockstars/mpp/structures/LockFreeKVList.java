@@ -1,17 +1,15 @@
 package com.javarockstars.mpp.structures;
 
-import java.util.Objects;
-
 /**
  * Author: dedocibula
  * Created on: 5.10.2015.
  */
-class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
+class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
     private Node<K, V> head;
 
     LockFreeKVList() {
-        this.head = new Node<>(-1, null, null);
-        this.head.setNext(new Node<>(-1, null, null));
+        this.head = new Node<>(Integer.MIN_VALUE, null, null);
+        this.head.setNext(new Node<>(Integer.MAX_VALUE, null, null));
     }
 
     @Override
@@ -28,7 +26,7 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
     }
 
     @Override
-    public boolean delete(Object key) {
+    public boolean delete(K key) {
         boolean snip;
         while (true) {
             Window<K, V> window = find(key);
@@ -45,12 +43,21 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
     }
 
     @Override
-    public boolean contains(Object key) {
+    public boolean contains(K key) {
         boolean[] marked = {false};
         Node<K, V> curr = head.next.get(marked);
         while (curr.key != null && !curr.key.equals(key))
             curr = curr.next.get(marked);
         return (curr.key != null && curr.key.equals(key) && !marked[0]);
+    }
+
+    @Override
+    public Node<K, V> get(K key) {
+        boolean[] marked = {false};
+        Node<K, V> curr = head.next.get(marked);
+        while (curr.key != null && !curr.key.equals(key))
+            curr = curr.next.get(marked);
+        return marked[0] || curr.key == null ? null : curr;
     }
 
     private Window<K, V> find(final Object key) {
@@ -70,7 +77,7 @@ class LockFreeKVList<K, V> implements Bucket<Node<K, V>> {
                     succ = curr.next.get(marked);
                 }
                 if (curr.key == null || curr.key.equals(key))
-                    return new Window<K, V>(prev, curr);
+                    return new Window<>(prev, curr);
                 prev = curr;
                 curr = succ;
             }
