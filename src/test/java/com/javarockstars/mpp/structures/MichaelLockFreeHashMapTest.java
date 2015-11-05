@@ -1,5 +1,6 @@
 package com.javarockstars.mpp.structures;
 
+import com.javarockstars.mpp.implementation.MichaelLockFreeHashMap;
 import com.javarockstars.mpp.structures.test.Person;
 import org.junit.After;
 import org.junit.Before;

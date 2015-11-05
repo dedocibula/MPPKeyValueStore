@@ -1,4 +1,4 @@
-package com.javarockstars.mpp.benchmarks;
+package com.javarockstars.mpp.implementation;
 
 import com.javarockstars.mpp.api.LockFreeMap;
 
