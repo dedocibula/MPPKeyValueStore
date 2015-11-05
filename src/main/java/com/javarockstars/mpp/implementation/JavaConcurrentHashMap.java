@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * Author: dedocibula
+ * @author shivam-maharshi
  * Created on: 4.11.2015.
  */
 public class JavaConcurrentHashMap<K, V> implements LockFreeMap<K, V> {
