@@ -4,10 +4,10 @@ package com.javarockstars.mpp.structures;
  * Author: dedocibula
  * Created on: 5.10.2015.
  */
-class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
+public class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
     private Node<K, V> head;
 
-    LockFreeKVList() {
+    public LockFreeKVList() {
         Node<K, V> last = new Node<>(Integer.MAX_VALUE, null, null, null);
         this.head = new Node<>(Integer.MIN_VALUE, null, null, last);
     }

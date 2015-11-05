@@ -1,20 +1,19 @@
 package com.javarockstars.mpp.structures;
 
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicMarkableReference;
 
 /**
  * Author: dedocibula
  * Created on: 5.10.2015.
  */
-class Node<K, V> implements Map.Entry<K, V> {
+public class Node<K, V> implements Map.Entry<K, V> {
     final int hash;
     final K key;
     V value;
     AtomicMarkableReference<Node<K, V>> next;
 
-    Node(int hash, K key, V value) {
+    public Node(int hash, K key, V value) {
         this.hash = hash;
         this.key = key;
         this.value = value;
@@ -62,5 +61,9 @@ class Node<K, V> implements Map.Entry<K, V> {
     @Override
     public int hashCode() {
         return key.hashCode() ^ value.hashCode();
+    }
+    
+    public AtomicMarkableReference<Node<K,V>> getNext() {
+    	return this.next;
     }
 }

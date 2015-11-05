@@ -4,7 +4,7 @@ package com.javarockstars.mpp.structures;
  * Author: dedocibula
  * Created on: 5.10.2015.
  */
-interface Bucket<T extends Node<K, V>, K, V> {
+public interface Bucket<T extends Node<K, V>, K, V> {
     /**
      * Inserts entry to the bucket.
      *

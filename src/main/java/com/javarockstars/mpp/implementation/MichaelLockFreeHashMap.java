@@ -1,12 +1,12 @@
 package com.javarockstars.mpp.implementation;
 
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import com.javarockstars.mpp.api.LockFreeMap;
 import com.javarockstars.mpp.structures.Bucket;
 import com.javarockstars.mpp.structures.LockFreeKVList;
 import com.javarockstars.mpp.structures.Node;
-
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Author: dedocibula
@@ -41,7 +41,7 @@ public class MichaelLockFreeHashMap<K, V> implements LockFreeMap<K, V> {
     public V get(K key) {
         Objects.requireNonNull(key);
         Node<K, V> node = table[getHash(key)].get(key);
-        return node == null || node.next.isMarked() ? null : node.getValue();
+        return node == null || node.getNext().isMarked() ? null : node.getValue();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MichaelLockFreeHashMap<K, V> implements LockFreeMap<K, V> {
         Objects.requireNonNull(key);
         Objects.requireNonNull(value);
         int hash = getHash(key);
-        Node<K, V> node = new Node<>(hash, key, value);
+        Node<K, V> node = new Node<K,V>(hash, key, value);
         if (table[hash].insert(node)) {
             size.incrementAndGet();
             return true;
@@ -73,8 +73,8 @@ public class MichaelLockFreeHashMap<K, V> implements LockFreeMap<K, V> {
         return false;
     }
 
-    private void initializeTable() {
-        //noinspection unchecked
+    @SuppressWarnings("unchecked")
+	private void initializeTable() {
         table = new LockFreeKVList[capacity];
         for (int i = 0; i < capacity; i++) {
             table[i] = new LockFreeKVList<>();
