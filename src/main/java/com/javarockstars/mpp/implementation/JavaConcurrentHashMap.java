@@ -8,11 +8,11 @@ import java.util.concurrent.ConcurrentMap;
  * Author: dedocibula
  * Created on: 4.11.2015.
  */
-public class ConcurrentMapAdapter<K, V> implements LockFreeMap<K, V> {
+public class JavaConcurrentHashMap<K, V> implements LockFreeMap<K, V> {
 
     private final ConcurrentMap<K, V> map;
 
-    public ConcurrentMapAdapter(ConcurrentMap<K, V> map) {
+    public JavaConcurrentHashMap(ConcurrentMap<K, V> map) {
         this.map = map;
     }
 
