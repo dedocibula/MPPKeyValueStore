@@ -5,6 +5,14 @@ import com.javarockstars.mpp.utills.Constants;
 import com.javarockstars.mpp.utills.Method;
 import com.javarockstars.mpp.utills.PoolType;
 
+/**
+ * This class is responsible for simulating the multiple users case which leads
+ * to congestion. These threads are designed specifically to benchmark different
+ * methods in varying load. All the parameters are easily configurable and
+ * design is extensible.
+ * 
+ * @author shivam-maharshi
+ */
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class CustomThread implements Runnable {
 	private static Method METHOD;
@@ -16,7 +24,7 @@ public class CustomThread implements Runnable {
 		javaConcurrentHashMap = javaMap;
 		michaelLockFreeHashMap = michaelMap;
 	}
-	
+
 	public static void setMethod(Method evaluationMethod) {
 		METHOD = evaluationMethod;
 	}
