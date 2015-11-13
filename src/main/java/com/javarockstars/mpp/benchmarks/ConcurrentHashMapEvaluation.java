@@ -28,7 +28,7 @@ import com.javarockstars.mpp.utills.Method;
  * 
  * @author shivam-maharshi
  */
-@BenchClass(runs = 1)
+@BenchClass(runs = 5)
 public class ConcurrentHashMapEvaluation {
 	private LockFreeMap<String, String> javaConcurrentHashMap;
 	private LockFreeMap<String, String> michaelLockFreeHashMap;
@@ -42,7 +42,7 @@ public class ConcurrentHashMapEvaluation {
 
 	@BeforeBenchClass
 	public void init() {
-		
+
 		javaConcurrentHashMap = new JavaConcurrentHashMap<String, String>(new ConcurrentHashMap<>(10000));
 		javaSkipListHashMap = new JavaConcurrentHashMap<String, String>(new ConcurrentSkipListMap<>());
 		highlyScalableHashMap = new JavaConcurrentHashMap<String, String>(new NonBlockingHashMap<>(10000));
@@ -60,62 +60,62 @@ public class ConcurrentHashMapEvaluation {
 
 	}
 
-	@Bench(beforeEachRun="evaluateRemove_JavaMap")
+	@Bench(beforeEachRun = "clearMapJavaMap")
 	public void evaluatePut_JavaMap() {
 		execute(jmrList, Method.PUT);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_JavaMap")
+	@Bench(beforeEachRun = "populateMapJavaMap")
 	public void evaluateGet_JavaMap() {
 		execute(jmrList, Method.GET);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_JavaMap")
+	@Bench(beforeEachRun = "populateMapJavaMap")
 	public void evaluateRemove_JavaMap() {
 		execute(jmrList, Method.DELETE);
 	}
-	
-	@Bench(beforeEachRun="evaluateRemove_HighSalableMap")
-	public void evaluatePut_HighSalableMap() {
+
+	@Bench(beforeEachRun = "clearMapHighScalableMap")
+	public void evaluatePut_HighScalableMap() {
 		execute(hsmList, Method.PUT);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_HighSalableMap")
-	public void evaluateGet_HighSalableMap() {
+	@Bench(beforeEachRun = "populateMapHighScalableMap")
+	public void evaluateGet_HighScalableMap() {
 		execute(hsmList, Method.GET);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_HighSalableMap")
-	public void evaluateRemove_HighSalableMap() {
+	@Bench(beforeEachRun = "populateMapHighScalableMap")
+	public void evaluateRemove_HighScalableMap() {
 		execute(hsmList, Method.DELETE);
 	}
-	
-	@Bench(beforeEachRun="evaluateRemove_JavaSkipListMap")
+
+	@Bench(beforeEachRun = "clearMapJavaSkipListMap")
 	public void evaluatePut_JavaSkipListMap() {
 		execute(jslList, Method.PUT);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_JavaSkipListMap")
+	@Bench(beforeEachRun = "populateMapJavaSkipListMap")
 	public void evaluateGet_JavaSkipListMap() {
 		execute(jslList, Method.GET);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_JavaSkipListMap")
+	@Bench(beforeEachRun = "populateMapJavaSkipListMap")
 	public void evaluateRemove_JavaSkipListMap() {
 		execute(jslList, Method.DELETE);
 	}
 
-	@Bench(beforeEachRun="evaluateRemove_MichaelMap")
+	@Bench(beforeEachRun = "clearMapMichaelMap")
 	public void evaluatePut_MichaelMap() {
 		execute(mmrList, Method.PUT);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_MichaelMap")
+	@Bench(beforeEachRun = "populateMapMichaelMap")
 	public void evaluateGet_MichaelMap() {
 		execute(mmrList, Method.GET);
 	}
 
-	@Bench(beforeEachRun="evaluatePut_MichaelMap")
+	@Bench(beforeEachRun = "populateMapMichaelMap")
 	public void evaluateRemove_MichaelMap() {
 		execute(mmrList, Method.DELETE);
 	}
@@ -126,7 +126,7 @@ public class ConcurrentHashMapEvaluation {
 			runnable.setMethod(method);
 		}
 		try {
-		List<Future<Void>> futures = executorService.invokeAll(runnables);
+			List<Future<Void>> futures = executorService.invokeAll(runnables);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -137,6 +137,52 @@ public class ConcurrentHashMapEvaluation {
 		executorService.shutdown();
 		javaConcurrentHashMap = null;
 		michaelLockFreeHashMap = null;
+	}
+
+	public void clearMapJavaMap() {
+		clearMap(javaConcurrentHashMap);
+	}
+
+	public void populateMapJavaMap() {
+		populateMap(javaConcurrentHashMap);
+	}
+
+	public void clearMapHighScalableMap() {
+		clearMap(highlyScalableHashMap);
+	}
+
+	public void populateMapHighScalableMap() {
+		populateMap(highlyScalableHashMap);
+	}
+
+	public void clearMapJavaSkipListMap() {
+		clearMap(javaSkipListHashMap);
+	}
+
+	public void populateMapJavaSkipListMap() {
+		populateMap(javaSkipListHashMap);
+	}
+
+	public void clearMapMichaelMap() {
+		clearMap(michaelLockFreeHashMap);
+	}
+
+	public void populateMapMichaelMap() {
+		populateMap(michaelLockFreeHashMap);
+	}
+
+	private void clearMap(LockFreeMap<String, String> hashMap) {
+		for (int i = 0; i < Constants.MAX_KEY; i++) {
+			hashMap.remove(i + "");
+		}
+		assert (hashMap.size() == 0);
+	}
+
+	private void populateMap(LockFreeMap<String, String> hashMap) {
+		for (int i = 0; i < Constants.MAX_KEY; i++) {
+			hashMap.put(i + "", Constants.DUMMY_VALUE);
+		}
+		assert (hashMap.size() == Constants.MAX_KEY);
 	}
 
 }

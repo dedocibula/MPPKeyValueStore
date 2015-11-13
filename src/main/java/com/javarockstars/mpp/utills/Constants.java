@@ -15,5 +15,5 @@ public final class Constants {
 	// Maximum key value present in the map.
 	public static final int MAX_KEY = 10000;
 	// Number of threads to be spawned for the same operation.
-	public static final int CONCURRENCY = 30000;
+	public static final int CONCURRENCY = 10;
 }
