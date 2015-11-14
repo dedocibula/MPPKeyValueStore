@@ -15,7 +15,7 @@ import org.perfidix.result.BenchmarkResult;
  * @author shivam.maharshi
  *
  */
-public class BenchmarkerInvoker {
+public class BenchmarkInvoker {
 
 	public static void main(String[] args) {
 		Benchmark benchmark = new Benchmark();

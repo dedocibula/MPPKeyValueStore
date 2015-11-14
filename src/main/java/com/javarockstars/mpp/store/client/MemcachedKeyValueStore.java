@@ -1,19 +1,23 @@
-package com.javarockstars.mpp.store;
+package com.javarockstars.mpp.store.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutionException;
 
 import com.javarockstars.mpp.store.api.KeyValueStore;
+import com.javarockstars.mpp.utills.Constants;
 
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.internal.OperationFuture;
 
 /**
+ * This class is responsible for providing a wrapper around the famous spy
+ * clients for Memcached. This wrapper helps us use our custom standard key
+ * value store interface for benchmarking.
  * 
  * @author shivam.maharshi
  */
-public class MemcachedKeyValueStore<java.lang.String, V> implements KeyValueStore<String, V> {
+public class MemcachedKeyValueStore<V> implements KeyValueStore<String, V> {
 
 	private MemcachedClient client;
 
@@ -25,23 +29,6 @@ public class MemcachedKeyValueStore<java.lang.String, V> implements KeyValueStor
 		}
 	}
 
-	public void test() {
-		try {
-
-			MemcachedClient client = new MemcachedClient(new InetSocketAddress("localhost", 11211));
-			OperationFuture<Boolean> future = client.add("key", 3600, new String("helloShivam"));
-			Object getfuture = client.get("key");
-			OperationFuture<Boolean> deletefuture = client.delete("key");
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	public static void main(String[] args) {
-		MemcachedKeyValueStore client = new MemcachedKeyValueStore();
-		client.test();
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public V get(String key) {
@@ -49,8 +36,8 @@ public class MemcachedKeyValueStore<java.lang.String, V> implements KeyValueStor
 	}
 
 	@Override
-	public Boolean add(String key) {
-		OperationFuture<Boolean> future = client.add(key, 3600, new String("helloShivam"));
+	public Boolean add(String key, V value) {
+		OperationFuture<Boolean> future = client.add(key, Constants.TIMEOUT, value.toString());
 		try {
 			return future.get();
 		} catch (InterruptedException | ExecutionException e) {
@@ -61,7 +48,7 @@ public class MemcachedKeyValueStore<java.lang.String, V> implements KeyValueStor
 
 	@Override
 	public Boolean delete(String key) {
-		OperationFuture<Boolean> future = client.delete((String)key);
+		OperationFuture<Boolean> future = client.delete((String) key);
 		try {
 			return future.get();
 		} catch (InterruptedException | ExecutionException e) {

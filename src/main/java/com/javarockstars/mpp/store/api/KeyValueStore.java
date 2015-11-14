@@ -1,11 +1,19 @@
 package com.javarockstars.mpp.store.api;
 
-public interface KeyValueStore<K,V> {
-	
+/**
+ * This class represents the operations offered by our basic key value store.
+ * 
+ * @author shivam.maharshi
+ *
+ * @param <K>
+ * @param <V>
+ */
+public interface KeyValueStore<K, V> {
+
 	public V get(K key);
-	
-	public Boolean add(K key);
-	
+
+	public Boolean add(K key, V value);
+
 	public Boolean delete(K key);
 
 }
