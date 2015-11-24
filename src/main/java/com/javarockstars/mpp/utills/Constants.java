@@ -18,6 +18,6 @@ public final class Constants {
 	public static final int CONCURRENCY = 10;
 	// Timeout in ms for Spy Memcached client for add operation.
 	public static final int TIMEOUT = 3600;
-	// The thread pool size for our custom key value store server.
+	// The thread pool size for our custom key value server server.
 	public static final int THREAD_POOL_SIZE = 50;
 }

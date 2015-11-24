@@ -1,7 +1,7 @@
 package com.javarockstars.mpp.store.api;
 
 /**
- * This class represents the operations offered by our basic key value store.
+ * This class represents the operations offered by our basic key value server.
  * 
  * @author shivam.maharshi
  *

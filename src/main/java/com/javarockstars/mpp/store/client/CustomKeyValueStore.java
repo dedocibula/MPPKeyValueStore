@@ -9,10 +9,10 @@ import com.javarockstars.mpp.api.LockFreeMap;
 import com.javarockstars.mpp.store.api.KeyValueStore;
 
 /**
- * This class is responsible for exposing a custom key value store client by
+ * This class is responsible for exposing a custom key value server client by
  * implementing {@link KeyValueStore} class. It can utilize any map that
  * implements {@link LockFreeMap} interface. Different types of maps can be
- * evaluated as key value store using this wrapper.
+ * evaluated as key value server using this wrapper.
  * 
  * @author shivam.maharshi
  */

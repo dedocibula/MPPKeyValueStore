@@ -13,7 +13,7 @@ import net.spy.memcached.internal.OperationFuture;
 /**
  * This class is responsible for providing a wrapper around the famous spy
  * clients for Memcached. This wrapper helps us use our custom standard key
- * value store interface for benchmarking.
+ * value server interface for benchmarking.
  * 
  * @author shivam.maharshi
  */

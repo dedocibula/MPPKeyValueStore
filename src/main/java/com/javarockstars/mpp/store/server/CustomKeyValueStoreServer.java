@@ -10,10 +10,10 @@ import com.javarockstars.mpp.api.LockFreeMap;
 import com.javarockstars.mpp.utills.Constants;
 
 /**
- * This class is responsible for instantiating a our custom key value store
+ * This class is responsible for instantiating a our custom key value server
  * server analogous to Memcached. It can utilize any map that implements
- * {@link LockFreeMap} interface to store key value pairs. The performance of
- * different types of maps can be evaluated while serving as a key value store
+ * {@link LockFreeMap} interface to server key value pairs. The performance of
+ * different types of maps can be evaluated while serving as a key value server
  * server, using this implementation.
  * 
  * @author shivam.maharshi
