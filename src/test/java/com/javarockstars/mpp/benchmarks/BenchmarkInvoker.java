@@ -30,11 +30,11 @@ public class BenchmarkInvoker {
         benchmark.add(ConcurrentSkipListHashMapBenchmark.class);
         benchmark.add(NonBlockingHashMapBenchmark.class);
         BenchmarkResult result = benchmark.run();
-//        new TabularSummaryOutput(toFile("benchmark.txt")).visitBenchmark(result);
-        TabularCSVOutput.toStream(toFile("benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
+//        new TabularSummaryOutput(printStream("benchmark.txt")).visitBenchmark(result);
+        TabularCSVOutput.toStream(printStream("benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
     }
 
-    private static PrintStream toFile(String fileName) throws IOException {
+    private static PrintStream printStream(final String fileName) throws IOException {
         Objects.requireNonNull(fileName);
         File currentDirectory = new File(System.getProperty("user.dir"));
         File newFile = new File(currentDirectory, fileName);
