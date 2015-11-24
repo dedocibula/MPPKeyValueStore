@@ -4,11 +4,14 @@ import com.javarockstars.mpp.benchmarks.datastructures.ConcurrentHashMapBenchmar
 import com.javarockstars.mpp.benchmarks.datastructures.ConcurrentSkipListHashMapBenchmark;
 import com.javarockstars.mpp.benchmarks.datastructures.MichaelLockFreeHashMapBenchmark;
 import com.javarockstars.mpp.benchmarks.datastructures.NonBlockingHashMapBenchmark;
+import com.javarockstars.mpp.benchmarks.extensions.TabularCSVOutput;
 import org.perfidix.Benchmark;
-import org.perfidix.ouput.TabularSummaryOutput;
 import org.perfidix.result.BenchmarkResult;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Objects;
 
 /**
@@ -20,13 +23,14 @@ import java.util.Objects;
  */
 public class BenchmarkInvoker {
     public static void main(String[] args) throws IOException {
-        Benchmark benchmark = new Benchmark();
+        Benchmark benchmark = new Benchmark(new BenchmarkConfig());
         benchmark.add(ConcurrentHashMapBenchmark.class);
         benchmark.add(MichaelLockFreeHashMapBenchmark.class);
         benchmark.add(ConcurrentSkipListHashMapBenchmark.class);
         benchmark.add(NonBlockingHashMapBenchmark.class);
         BenchmarkResult result = benchmark.run();
-        new TabularSummaryOutput(toFile("benchmark.txt")).visitBenchmark(result);
+//        new TabularSummaryOutput(toFile("benchmark.txt")).visitBenchmark(result);
+        new TabularCSVOutput(toFile("benchmark.csv")).visitBenchmark(result);
     }
 
     private static PrintStream toFile(String fileName) throws IOException {
