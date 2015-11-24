@@ -1,12 +1,12 @@
 package com.javarockstars.mpp.store.client;
 
+import com.javarockstars.mpp.datastructures.api.LockFreeMap;
+import com.javarockstars.mpp.store.api.KeyValueStore;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-
-import com.javarockstars.mpp.api.LockFreeMap;
-import com.javarockstars.mpp.store.api.KeyValueStore;
 
 /**
  * This class is responsible for exposing a custom key value server client by
@@ -43,22 +43,22 @@ public class CustomKeyValueStore<K, V> implements KeyValueStore<K, V> {
 	}
 
 	@Override
-	public Boolean add(K key, V value) {
+	public boolean add(K key, V value) {
 		/*
 		 * TODO: Will form appropriate request and communicate with the
 		 * CustomKeyValueStore server over socket connection for ADD operation.
 		 */
-		return null;
+		return false;
 	}
 
 	@Override
-	public Boolean delete(K key) {
+	public boolean delete(K key) {
 		/*
 		 * TODO: Will form appropriate request and communicate with the
 		 * CustomKeyValueStore server over socket connection for DELETE
 		 * operation.
 		 */
-		return null;
+		return false;
 	}
 
 }
