@@ -2,6 +2,7 @@ package com.javarockstars.mpp.datastructures;
 
 import com.javarockstars.mpp.datastructures.common.LockFreeKVListTest;
 import com.javarockstars.mpp.datastructures.implementation.MichaelLockFreeHashMapTest;
+import com.javarockstars.mpp.datastructures.util.ConcurrentMapAdapterFunctionalTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -14,7 +15,8 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses(value = {
         LockFreeKVListTest.class,
-        MichaelLockFreeHashMapTest.class
+        MichaelLockFreeHashMapTest.class,
+        ConcurrentMapAdapterFunctionalTest.class
 })
 public class JUnitTestSuite {
 }
