@@ -33,7 +33,7 @@ public class BenchmarkInvoker {
         Objects.requireNonNull(fileName);
         File currentDirectory = new File(System.getProperty("user.dir"));
         File newFile = new File(currentDirectory, fileName);
-        if (!newFile.exists())
+        if (newFile.exists())
             return (newFile.isDirectory() || !newFile.canWrite()) ? System.out : new PrintStream(new FileOutputStream(newFile, true));
         else
             return newFile.createNewFile() ? new PrintStream(newFile) : System.out;

@@ -68,11 +68,9 @@ public abstract class LockFreeMapBenchmark {
 
     protected void setupActions(Runnable action) {
         actions.clear();
+        Executors.callable(action, Void.TYPE);
         IntStream.range(0, BenchmarkConstants.CONCURRENCY)
-                .mapToObj(i -> (Callable<Void>) () -> {
-                    action.run();
-                    return null;
-                })
+                .mapToObj(i -> (Callable) Executors.callable(action))
                 .forEach(actions::add);
     }
 }
