@@ -19,6 +19,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
+ * Custom tabular CSV output for benchmark results. Supports grouping
+ * and dumping to file.
+ *
  * Author: dedocibula
  * Created on: 23.11.2015.
  */
@@ -39,14 +42,28 @@ public final class TabularCSVOutput extends AbstractOutput {
         this.resultGrouping = Grouping.CLASS;
     }
 
+    /**
+     *
+     * @return new output redirecting processed results to System.out
+     */
     public static TabularCSVOutput toConsole() {
         return new TabularCSVOutput(System.out);
     }
 
+    /**
+     *
+     * @param out print stream (destination)
+     * @return new output redirecting processed results to given print stream
+     */
     public static TabularCSVOutput toStream(final PrintStream out) {
         return new TabularCSVOutput(out);
     }
 
+    /**
+     *
+     * @param resultGrouping enum dictating how should the results be ordered
+     * @return output
+     */
     public TabularCSVOutput groupBy(final Grouping resultGrouping) {
         Objects.requireNonNull(resultGrouping);
         this.resultGrouping = resultGrouping;
@@ -122,6 +139,12 @@ public final class TabularCSVOutput extends AbstractOutput {
         return true;
     }
 
+    /**
+     * Outputs benchmark metrics grouped by class.
+     *
+     * @param meter current meter
+     * @param result benchmark result
+     */
     private void generateMetricsByClass(final AbstractMeter meter, final BenchmarkResult result) {
         for (final ClassResult classRes : result.getIncludedResults()) {
             addHeader(classRes.getElementName(), Alignment.Left);
@@ -138,6 +161,12 @@ public final class TabularCSVOutput extends AbstractOutput {
         }
     }
 
+    /**
+     * Outputs benchmark metrics grouped by method.
+     *
+     * @param meter current meter
+     * @param result benchmark result
+     */
     private void generateMetricsByMethod(final AbstractMeter meter, final BenchmarkResult result) {
         Map<String, List<Pair<MethodResult, ClassResult>>> resultListMap = result.getIncludedResults()
                 .stream()
@@ -156,6 +185,13 @@ public final class TabularCSVOutput extends AbstractOutput {
         }
     }
 
+    /**
+     * Outputs one row corresponding to one benchmark result.
+     *
+     * @param columnDesc column description
+     * @param meter current meter
+     * @param result benchmark result
+     */
     private void generateMeterResult(final String columnDesc, final AbstractMeter meter, final AbstractResult result) {
         addRow(columnDesc,
                 meter.getUnit(),
@@ -168,6 +204,12 @@ public final class TabularCSVOutput extends AbstractOutput {
                 AbstractOutput.format(result.getResultSet(meter).size()));
     }
 
+    /**
+     * Outputs header with specific alignment.
+     *
+     * @param title header title
+     * @param alignment alignment
+     */
     private void addHeader(final String title, final Alignment alignment) {
         int position = alignment == Alignment.Center ? COLUMN_COUNT / 2 : (alignment == Alignment.Right) ? COLUMN_COUNT - 1 : 0;
         for (int i = 0; i < COLUMN_COUNT; i++) {
@@ -178,14 +220,22 @@ public final class TabularCSVOutput extends AbstractOutput {
         out.println();
     }
 
+    /**
+     * Outputs row with given values.
+     *
+     * @param data data values
+     */
     private void addRow(final String... data) {
         out.println(Arrays.stream(data).collect(Collectors.joining(SEPARATOR)));
     }
 
+    /**
+     * Outputs empty row.
+     */
     private void emptyRow() {
         out.println();
     }
-
+    
     public enum Grouping {
         CLASS,
         METHOD

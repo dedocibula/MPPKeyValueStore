@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Custom config for benchmarks.
+ *
  * Author: dedocibula
  * Created on: 24.11.2015.
  */
