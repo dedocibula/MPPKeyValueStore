@@ -13,6 +13,8 @@ import org.perfidix.result.MethodResult;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -20,23 +22,35 @@ import java.util.stream.Collectors;
  * Author: dedocibula
  * Created on: 23.11.2015.
  */
-public class TabularCSVOutput extends AbstractOutput {
+public final class TabularCSVOutput extends AbstractOutput {
     private transient final PrintStream out;
 
     private static final int COLUMN_COUNT = 9;
     private static final String SEPARATOR = ",";
 
     private boolean firstResult;
+    private Grouping resultGrouping;
 
-    public TabularCSVOutput(final PrintStream out) {
+    private TabularCSVOutput(final PrintStream out) {
         super();
         Objects.requireNonNull(out);
         this.out = out;
         this.firstResult = true;
+        this.resultGrouping = Grouping.CLASS;
     }
 
-    public TabularCSVOutput() {
-        this(System.out);
+    public static TabularCSVOutput toConsole() {
+        return new TabularCSVOutput(System.out);
+    }
+
+    public static TabularCSVOutput toStream(final PrintStream out) {
+        return new TabularCSVOutput(out);
+    }
+
+    public TabularCSVOutput groupBy(final Grouping resultGrouping) {
+        Objects.requireNonNull(resultGrouping);
+        this.resultGrouping = resultGrouping;
+        return this;
     }
 
     @Override
@@ -50,17 +64,10 @@ public class TabularCSVOutput extends AbstractOutput {
 
         // generate metrics by benchmark
         for (final AbstractMeter meter : res.getRegisteredMeters()) {
-            addHeader(meter.getName(), Alignment.Center);
-            for (final ClassResult classRes : res.getIncludedResults()) {
-                addHeader(classRes.getElementName(), Alignment.Left);
-                for (final MethodResult methRes : classRes.getIncludedResults()) {
-                    generateMeterResult(methRes.getElementName(), meter, methRes);
-                }
-
-                addHeader("Summary for " + classRes.getElementName(), Alignment.Left);
-                generateMeterResult("", meter, classRes);
-                emptyRow();
-            }
+            if (resultGrouping == Grouping.METHOD)
+                generateMetricsByMethod(meter, res);
+            else
+                generateMetricsByClass(meter, res);
         }
 
         // generate final summary
@@ -115,6 +122,40 @@ public class TabularCSVOutput extends AbstractOutput {
         return true;
     }
 
+    private void generateMetricsByClass(final AbstractMeter meter, final BenchmarkResult result) {
+        for (final ClassResult classRes : result.getIncludedResults()) {
+            addHeader(classRes.getElementName(), Alignment.Left);
+            for (final MethodResult methRes : classRes.getIncludedResults()
+                    .stream()
+                    .sorted((m1, m2) -> m1.getElementName().compareTo(m2.getElementName()))
+                    .collect(Collectors.toList())) {
+                generateMeterResult(methRes.getElementName(), meter, methRes);
+            }
+
+            addHeader("Summary for " + classRes.getElementName(), Alignment.Left);
+            generateMeterResult("", meter, classRes);
+            emptyRow();
+        }
+    }
+
+    private void generateMetricsByMethod(final AbstractMeter meter, final BenchmarkResult result) {
+        Map<String, List<Pair<MethodResult, ClassResult>>> resultListMap = result.getIncludedResults()
+                .stream()
+                .flatMap(c -> c.getIncludedResults().stream().map(m -> new Pair<>(m, c)))
+                .collect(Collectors.groupingBy(p -> p.first.getElementName()));
+        for (final String methName : resultListMap.keySet()) {
+            addHeader(methName.toUpperCase(), Alignment.Left);
+            for (Pair<MethodResult, ClassResult> pair : resultListMap.get(methName)
+                    .stream()
+                    .sorted((p1, p2) -> p1.second.getElementName().compareTo(p2.second.getElementName()))
+                    .collect(Collectors.toList())) {
+                generateMeterResult(pair.second.getElementName(), meter, pair.first);
+            }
+
+            emptyRow();
+        }
+    }
+
     private void generateMeterResult(final String columnDesc, final AbstractMeter meter, final AbstractResult result) {
         addRow(columnDesc,
                 meter.getUnit(),
@@ -143,5 +184,20 @@ public class TabularCSVOutput extends AbstractOutput {
 
     private void emptyRow() {
         out.println();
+    }
+
+    public enum Grouping {
+        CLASS,
+        METHOD
+    }
+
+    private static final class Pair<T1, T2> {
+        final T1 first;
+        final T2 second;
+
+        private Pair(T1 first, T2 second) {
+            this.first = first;
+            this.second = second;
+        }
     }
 }

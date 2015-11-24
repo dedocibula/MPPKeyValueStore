@@ -5,6 +5,7 @@ import com.javarockstars.mpp.benchmarks.datastructures.ConcurrentSkipListHashMap
 import com.javarockstars.mpp.benchmarks.datastructures.MichaelLockFreeHashMapBenchmark;
 import com.javarockstars.mpp.benchmarks.datastructures.NonBlockingHashMapBenchmark;
 import com.javarockstars.mpp.benchmarks.extensions.TabularCSVOutput;
+import com.javarockstars.mpp.benchmarks.extensions.TabularCSVOutput.Grouping;
 import org.perfidix.Benchmark;
 import org.perfidix.result.BenchmarkResult;
 
@@ -30,7 +31,7 @@ public class BenchmarkInvoker {
         benchmark.add(NonBlockingHashMapBenchmark.class);
         BenchmarkResult result = benchmark.run();
 //        new TabularSummaryOutput(toFile("benchmark.txt")).visitBenchmark(result);
-        new TabularCSVOutput(toFile("benchmark.csv")).visitBenchmark(result);
+        TabularCSVOutput.toStream(toFile("benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
     }
 
     private static PrintStream toFile(String fileName) throws IOException {
