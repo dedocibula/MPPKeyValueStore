@@ -1,7 +1,7 @@
-package com.javarockstars.mpp.store.client;
+package com.javarockstars.mpp.keyvaluestore.client;
 
-import com.javarockstars.mpp.store.Constants;
-import com.javarockstars.mpp.store.api.KeyValueStore;
+import com.javarockstars.mpp.keyvaluestore.Constants;
+import com.javarockstars.mpp.keyvaluestore.api.KeyValueStore;
 import net.spy.memcached.MemcachedClient;
 import net.spy.memcached.internal.OperationFuture;
 
