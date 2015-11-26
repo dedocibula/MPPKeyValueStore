@@ -5,14 +5,12 @@ package com.javarockstars.mpp.keyvaluestore.api;
  * 
  * @author shivam.maharshi
  *
- * @param <K>
- * @param <V>
  */
-public interface KeyValueStore<K, V> {
+public interface KeyValueStoreClient {
 
-	V get(K key);
+	<K, V> V get(final K key, final Class<V> valueType);
 
-	boolean add(K key, V value);
+	<K, V> boolean add(final K key, final V value);
 
-	boolean delete(K key);
+	<K> boolean delete(final K key);
 }

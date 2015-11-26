@@ -1,6 +1,6 @@
-package com.javarockstars.mpp.keyvaluestore.common;
+package com.javarockstars.mpp.keyvaluestore.connection;
 
-import java.net.SocketAddress;
+import java.nio.channels.AsynchronousSocketChannel;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -11,19 +11,21 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public final class MPPConnectionPool {
     private static ConcurrentLinkedQueue<MPPConnection> pool = new ConcurrentLinkedQueue<>();
 
-    public static MPPConnection getConnection(final SocketAddress forAddress) {
-        Objects.requireNonNull(forAddress);
+    public static MPPConnection getConnection(final AsynchronousSocketChannel forClient) {
+        Objects.requireNonNull(forClient);
         MPPConnection poll = pool.poll();
         if (poll != null)
-            poll.setSocketAddress(forAddress);
+            poll.setSocketAddress(forClient);
         else
-            poll = new MPPConnection(forAddress);
+            poll = new MPPConnection(forClient);
         return poll;
     }
 
     public static void retrieveConnection(final MPPConnection connection) {
         Objects.requireNonNull(connection);
         connection.setSocketAddress(null);
+        connection.setRead();
+        connection.getReadWriteBuffer().clear();
         pool.offer(connection);
     }
 }
