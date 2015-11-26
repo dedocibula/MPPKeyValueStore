@@ -41,6 +41,7 @@ public final class MPPServer {
 
 	public synchronized void start() throws Exception {
 		if (serverChannel == null) {
+			System.out.format("Starting server. Server is listening at %s%n\n", address);
 			serverChannel = AsynchronousServerSocketChannel.open(group).bind(address);
 			serverChannel.accept(serverChannel, new MPPConnectionHandler(processorSupplier));
 		}
@@ -48,9 +49,11 @@ public final class MPPServer {
 
 	public synchronized void stop() throws Exception {
 		if (group != null) {
+			System.out.println("Stopping server.");
 			group.shutdown();
 			group.awaitTermination(10, TimeUnit.SECONDS);
 		} else if (serverChannel != null && serverChannel.isOpen()) {
+			System.out.println("Stopping server.");
 			serverChannel.close();
 		}
 		serverChannel = null;
@@ -123,15 +126,16 @@ public final class MPPServer {
 			MPPCommand command = SerializationHelper.deserialize(bytes, MPPCommand.class);
 			bytes = SerializationHelper.serialize(processor.processCommand(command));
 			buffer.clear();
-			buffer.put(bytes);
+			buffer.put(bytes).flip();
 		}
 
 		private void dispose(MPPConnection connection) {
 			AsynchronousSocketChannel client = connection.getClient();
 			try {
-				if (client.isOpen())
+				if (client.isOpen()) {
+					System.out.format("Stopped listening to the client %s%n", client.getRemoteAddress());
 					client.close();
-				System.out.format("Stopped listening to the client %s%n", client.getRemoteAddress());
+				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}

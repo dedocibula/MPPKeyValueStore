@@ -21,13 +21,11 @@ import java.util.concurrent.*;
  */
 public final class MPPClient implements KeyValueStoreClient {
 	private AsynchronousSocketChannel clientChannel;
-	private MPPConnection connection;
 
 	public MPPClient(final InetSocketAddress address) throws Exception {
 		Objects.requireNonNull(address);
 		this.clientChannel = AsynchronousSocketChannel.open();
-		this.connection = MPPConnectionPool.getConnection(clientChannel);
-		clientChannel.connect(address);
+		clientChannel.connect(address).get();
 	}
 
 	@Override
@@ -69,8 +67,9 @@ public final class MPPClient implements KeyValueStoreClient {
 	}
 
 	private <T> Future<T> executeAsync(MPPCommand command, Class<T> resultType) {
+		MPPConnection connection = MPPConnectionPool.getConnection(clientChannel);
 		connection.setWrite();
-		connection.getReadWriteBuffer().put(SerializationHelper.serialize(command));
+		connection.getReadWriteBuffer().put(SerializationHelper.serialize(command)).flip();
 		MPPResponseHandler<T> handler = new MPPResponseHandler<>(resultType);
 		clientChannel.write(connection.getReadWriteBuffer(), connection, handler);
 		return handler.getResponse();
@@ -80,7 +79,6 @@ public final class MPPClient implements KeyValueStoreClient {
 	public void close() throws IOException {
 		if (clientChannel.isOpen())
 			clientChannel.close();
-		MPPConnectionPool.retrieveConnection(connection);
 	}
 
 	private static final class MPPResponseHandler<T> implements CompletionHandler<Integer, MPPConnection> {
@@ -178,7 +176,6 @@ public final class MPPClient implements KeyValueStoreClient {
 		}
 
 		private void setException(Throwable exception) {
-			Objects.requireNonNull(result);
 			synchronized (latch) {
 				if (!done && latch.getCount() > 0) {
 					this.exception = exception;

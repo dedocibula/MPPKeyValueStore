@@ -23,7 +23,6 @@ public final class MPPConnection {
 	}
 
 	void setSocketAddress(AsynchronousSocketChannel newClient) {
-		Objects.requireNonNull(newClient);
 		this.client = newClient;
 	}
 

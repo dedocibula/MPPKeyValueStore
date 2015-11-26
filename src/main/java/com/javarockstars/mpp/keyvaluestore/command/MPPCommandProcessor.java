@@ -6,5 +6,5 @@ package com.javarockstars.mpp.keyvaluestore.command;
  */
 public interface MPPCommandProcessor {
 
-    <T> T processCommand(final MPPCommand command);
+    Object processCommand(final MPPCommand command);
 }
