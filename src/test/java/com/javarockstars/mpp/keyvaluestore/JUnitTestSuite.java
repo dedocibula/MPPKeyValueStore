@@ -1,6 +1,7 @@
 package com.javarockstars.mpp.keyvaluestore;
 
 import com.javarockstars.mpp.keyvaluestore.client.MPPClientTest;
+import com.javarockstars.mpp.keyvaluestore.server.MPPServerStressTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -12,7 +13,8 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        MPPClientTest.class
+        MPPClientTest.class,
+        MPPServerStressTest.class
 })
 public class JUnitTestSuite {
 }
