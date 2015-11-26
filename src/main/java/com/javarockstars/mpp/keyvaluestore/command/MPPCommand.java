@@ -6,30 +6,41 @@ import java.util.Objects;
  * Author: dedocibula
  * Created on: 25.11.2015.
  */
-public abstract class MPPCommand {
-    private Type type;
-    private Object[] arguments;
+public final class MPPCommand {
+	private Type type;
+	private String key;
+	private Object value;
 
-    private MPPCommand() {
-        // deserialization
-    }
+	@SuppressWarnings("unused")
+	private MPPCommand() {
+		// deserialization
+	}
 
-    MPPCommand(final Type type, final Object... arguments) {
-        Objects.requireNonNull(type);
-        Objects.requireNonNull(arguments);
-        this.type = type;
-        this.arguments = arguments;
-    }
+	MPPCommand(final Type type, final String key) {
+		this(type, key, null);
+	}
 
-    public Type getType() {
-        return type;
-    }
+	MPPCommand(final Type type, final String key, final Object value) {
+		Objects.requireNonNull(type);
+		Objects.requireNonNull(key);
+		this.type = type;
+		this.key = key;
+		this.value = value;
+	}
 
-    public Object[] getArguments() {
-        return arguments;
-    }
+	public Type getType() {
+		return type;
+	}
 
-    enum Type {
-        GET, PUT, REMOVE
-    }
+	public String getKey() {
+		return key;
+	}
+
+	public Object getValue() {
+		return value;
+	}
+
+	enum Type {
+		GET, PUT, REMOVE
+	}
 }

@@ -2,14 +2,11 @@ package com.javarockstars.mpp.keyvaluestore.client;
 
 import com.javarockstars.mpp.keyvaluestore.api.KeyValueStoreClient;
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommand;
-import com.javarockstars.mpp.keyvaluestore.command.MPPGetCommand;
-import com.javarockstars.mpp.keyvaluestore.command.MPPPutCommand;
-import com.javarockstars.mpp.keyvaluestore.command.MPPRemoveCommand;
+import com.javarockstars.mpp.keyvaluestore.command.MPPCommandFactory;
 import com.javarockstars.mpp.keyvaluestore.connection.MPPConnection;
 import com.javarockstars.mpp.keyvaluestore.connection.MPPConnectionPool;
 import com.javarockstars.mpp.keyvaluestore.util.SerializationHelper;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -22,7 +19,7 @@ import java.util.concurrent.*;
  * Author: dedocibula
  * Created on: 25.11.2015.
  */
-public class MPPClient implements KeyValueStoreClient, Closeable {
+public final class MPPClient implements KeyValueStoreClient {
 	private AsynchronousSocketChannel clientChannel;
 	private MPPConnection connection;
 
@@ -34,12 +31,12 @@ public class MPPClient implements KeyValueStoreClient, Closeable {
 	}
 
 	@Override
-	public <K, V> V get(final K key, final Class<V> valueType) {
+	public <V> V get(final String key, final Class<V> valueType) {
 		Objects.requireNonNull(key);
 		Objects.requireNonNull(valueType);
 		V result = null;
 		try {
-			result = executeAsync(new MPPGetCommand<>(key), valueType).get();
+			result = executeAsync(MPPCommandFactory.newGetCommand(key), valueType).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -47,12 +44,12 @@ public class MPPClient implements KeyValueStoreClient, Closeable {
 	}
 
 	@Override
-	public <K, V> boolean add(K key, V value) {
+	public <V> boolean add(String key, V value) {
 		Objects.requireNonNull(key);
 		Objects.requireNonNull(value);
 		boolean result = false;
 		try {
-			result = executeAsync(new MPPPutCommand<>(key, value), Boolean.TYPE).get();
+			result = executeAsync(MPPCommandFactory.newPutCommand(key, value), Boolean.TYPE).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}
@@ -60,11 +57,11 @@ public class MPPClient implements KeyValueStoreClient, Closeable {
 	}
 
 	@Override
-	public <K> boolean delete(K key) {
+	public boolean delete(String key) {
 		Objects.requireNonNull(key);
 		boolean result = false;
 		try {
-			result = executeAsync(new MPPRemoveCommand<>(key), Boolean.TYPE).get();
+			result = executeAsync(MPPCommandFactory.newRemoveCommand(key), Boolean.TYPE).get();
 		} catch (InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 		}

@@ -1,16 +1,18 @@
 package com.javarockstars.mpp.keyvaluestore.api;
 
+import java.io.Closeable;
+
 /**
  * This class represents the operations offered by our basic key value server.
  * 
  * @author shivam.maharshi
  *
  */
-public interface KeyValueStoreClient {
+public interface KeyValueStoreClient extends Closeable {
 
-	<K, V> V get(final K key, final Class<V> valueType);
+	<V> V get(final String key, final Class<V> valueType);
 
-	<K, V> boolean add(final K key, final V value);
+	<V> boolean add(final String key, final V value);
 
-	<K> boolean delete(final K key);
+	boolean delete(final String key);
 }
