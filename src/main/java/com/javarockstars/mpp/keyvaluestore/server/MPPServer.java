@@ -49,7 +49,6 @@ public final class MPPServer {
             if (serverChannel == null) {
                 System.out.format("Starting server. Server is listening at %s%n\n", address);
                 serverChannel = AsynchronousServerSocketChannel.open(group).bind(address);
-                MPPConnectionHandler handler = new MPPConnectionHandler(processorSupplier);
                 serverChannel.accept(serverChannel, new MPPConnectionHandler(processorSupplier));
             }
         }
@@ -91,8 +90,10 @@ public final class MPPServer {
 
         @Override
         public void failed(Throwable e, AsynchronousServerSocketChannel server) {
-            System.out.println("Failed to accept a connection.");
-            e.printStackTrace();
+            if (server.isOpen()) {
+                System.out.println("Failed to accept a connection.");
+                e.printStackTrace();
+            }
         }
     }
 
