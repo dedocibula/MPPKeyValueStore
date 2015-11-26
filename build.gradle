@@ -12,6 +12,7 @@ repositories {
 dependencies {
     compile group: 'com.github.stephenc.high-scale-lib', name: 'high-scale-lib', version: '1.1.4'
     compile group: 'net.spy', name: 'spymemcached', version: '2.12.0'
+    compile group: 'redis.clients', name: 'jedis', version: '2.8.0'
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.perfidix', name: 'perfidix', version: '3.6.9'

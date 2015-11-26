@@ -8,6 +8,7 @@ import net.spy.memcached.MemcachedClient;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -20,17 +21,22 @@ import java.util.concurrent.ExecutionException;
 public final class MemcachedKeyValueStoreClient implements KeyValueStoreClient {
     private MemcachedClient client;
 
-    public MemcachedKeyValueStoreClient(String hostname, int port) throws Exception {
-        client = new MemcachedClient(new InetSocketAddress(hostname, port));
+    public MemcachedKeyValueStoreClient(final InetSocketAddress address) throws Exception {
+        Objects.requireNonNull(address);
+        client = new MemcachedClient(address);
     }
 
     @Override
-    public <V extends Serializable> V get(String key, Class<V> valueType) {
+    public <V extends Serializable> V get(final String key, final Class<V> valueType) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(valueType);
         return SerializationHelper.deserialize((byte[]) client.get(key), valueType);
     }
 
     @Override
-    public <V extends Serializable> boolean add(String key, V value) {
+    public <V extends Serializable> boolean add(final String key, final V value) {
+        Objects.requireNonNull(key);
+        Objects.requireNonNull(value);
         boolean result = false;
         try {
             result = client.add(key, Constants.TIMEOUT, SerializationHelper.serialize(value)).get();
@@ -41,7 +47,8 @@ public final class MemcachedKeyValueStoreClient implements KeyValueStoreClient {
     }
 
     @Override
-    public boolean delete(String key) {
+    public boolean delete(final String key) {
+        Objects.requireNonNull(key);
         boolean result = false;
         try {
             result = client.delete(key).get();
