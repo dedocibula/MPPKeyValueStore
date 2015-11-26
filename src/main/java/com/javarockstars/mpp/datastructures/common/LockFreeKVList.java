@@ -4,7 +4,7 @@ package com.javarockstars.mpp.datastructures.common;
  * Author: dedocibula
  * Created on: 5.10.2015.
  */
-public class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
+public final class LockFreeKVList<K, V> implements Bucket<Node<K, V>, K, V> {
     private Node<K, V> head;
 
     public LockFreeKVList() {

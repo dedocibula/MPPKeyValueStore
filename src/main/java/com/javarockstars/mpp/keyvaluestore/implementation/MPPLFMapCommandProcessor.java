@@ -4,6 +4,7 @@ import com.javarockstars.mpp.datastructures.api.LockFreeMap;
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommand;
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommandProcessor;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -11,14 +12,14 @@ import java.util.Objects;
  * Created on: 25.11.2015.
  */
 public class MPPLFMapCommandProcessor implements MPPCommandProcessor {
-    private final LockFreeMap<String, Object> lockFreeMap;
+    private final LockFreeMap<String, Serializable> lockFreeMap;
 
-    public MPPLFMapCommandProcessor(LockFreeMap<String, Object> lockFreeMap) {
+    public MPPLFMapCommandProcessor(final LockFreeMap<String, Serializable> lockFreeMap) {
         this.lockFreeMap = lockFreeMap;
     }
 
     @Override
-    public Object processCommand(final MPPCommand command) {
+    public Serializable processCommand(final MPPCommand command) {
         Objects.requireNonNull(command);
         switch (command.getType()) {
             case GET:

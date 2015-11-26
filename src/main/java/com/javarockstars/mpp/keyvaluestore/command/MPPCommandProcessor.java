@@ -1,10 +1,12 @@
 package com.javarockstars.mpp.keyvaluestore.command;
 
+import java.io.Serializable;
+
 /**
  * Author: dedocibula
  * Created on: 25.11.2015.
  */
 public interface MPPCommandProcessor {
 
-    Object processCommand(final MPPCommand command);
+    Serializable processCommand(final MPPCommand command);
 }

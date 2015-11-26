@@ -3,7 +3,6 @@ package com.javarockstars.mpp.keyvaluestore.example;
 import com.javarockstars.mpp.keyvaluestore.client.MPPClient;
 
 import java.net.InetSocketAddress;
-import java.util.Objects;
 
 /**
  * Author: dedocibula

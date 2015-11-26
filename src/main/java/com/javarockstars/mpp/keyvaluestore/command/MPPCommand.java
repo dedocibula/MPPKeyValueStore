@@ -10,7 +10,7 @@ import java.util.Objects;
 public final class MPPCommand implements Serializable {
     private Type type;
     private String key;
-    private Object value;
+    private Serializable value;
 
     @SuppressWarnings("unused")
     private MPPCommand() {
@@ -21,7 +21,7 @@ public final class MPPCommand implements Serializable {
         this(type, key, null);
     }
 
-    MPPCommand(final Type type, final String key, final Object value) {
+    MPPCommand(final Type type, final String key, final Serializable value) {
         Objects.requireNonNull(type);
         Objects.requireNonNull(key);
         this.type = type;
@@ -37,7 +37,7 @@ public final class MPPCommand implements Serializable {
         return key;
     }
 
-    public Object getValue() {
+    public Serializable getValue() {
         return value;
     }
 

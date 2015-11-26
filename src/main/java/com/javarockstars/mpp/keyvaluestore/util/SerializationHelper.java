@@ -8,7 +8,7 @@ import java.util.Objects;
  * Created on: 25.11.2015.
  */
 public final class SerializationHelper {
-    public static byte[] serialize(Object obj) {
+    public static byte[] serialize(Serializable obj) {
         try (ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
              ObjectOutputStream objectOut = new ObjectOutputStream(byteArrayOut)) {
             objectOut.writeObject(obj);
@@ -19,7 +19,7 @@ public final class SerializationHelper {
         }
     }
 
-    public static <T> T deserialize(byte[] objectBytes, Class<T> type) {
+    public static <T extends Serializable> T deserialize(byte[] objectBytes, Class<T> type) {
         Objects.requireNonNull(objectBytes);
         try (ByteArrayInputStream byteArrayIn = new ByteArrayInputStream(objectBytes);
              ObjectInputStream objectIn = new ObjectInputStream(byteArrayIn)) {

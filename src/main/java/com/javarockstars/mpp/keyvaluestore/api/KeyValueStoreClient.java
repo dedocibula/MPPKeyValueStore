@@ -1,6 +1,7 @@
 package com.javarockstars.mpp.keyvaluestore.api;
 
 import java.io.Closeable;
+import java.io.Serializable;
 
 /**
  * This class represents the operations offered by our basic key value server.
@@ -10,9 +11,9 @@ import java.io.Closeable;
  */
 public interface KeyValueStoreClient extends Closeable {
 
-	<V> V get(final String key, final Class<V> valueType);
+	<V extends Serializable> V get(final String key, final Class<V> valueType);
 
-	<V> boolean add(final String key, final V value);
+	<V extends Serializable> boolean add(final String key, final V value);
 
 	boolean delete(final String key);
 }

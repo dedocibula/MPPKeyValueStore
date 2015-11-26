@@ -6,6 +6,7 @@ import com.javarockstars.mpp.keyvaluestore.command.MPPCommandProcessor;
 import com.javarockstars.mpp.keyvaluestore.implementation.MPPLFMapCommandProcessor;
 import com.javarockstars.mpp.keyvaluestore.server.MPPServer;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 /**
@@ -27,7 +28,7 @@ public class ServerExample {
                     return null;
             }
         };
-        LockFreeMap<String, Object> lockFreeMap = new MichaelLockFreeHashMap<>(100);
+        LockFreeMap<String, Serializable> lockFreeMap = new MichaelLockFreeHashMap<>(100);
         MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> new MPPLFMapCommandProcessor(lockFreeMap));
         server.start();
         System.in.read();

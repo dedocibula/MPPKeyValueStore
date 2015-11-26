@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentMap;
  * Author: dedocibula, shivam-maharshi
  * Created on: 4.11.2015.
  */
-public class ConcurrentMapAdapter<K, V> implements LockFreeMap<K, V> {
+public final class ConcurrentMapAdapter<K, V> implements LockFreeMap<K, V> {
 
     private final ConcurrentMap<K, V> map;
 

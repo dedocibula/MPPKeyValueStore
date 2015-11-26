@@ -2,6 +2,8 @@ package com.javarockstars.mpp.keyvaluestore.command;
 
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommand.Type;
 
+import java.io.Serializable;
+
 /**
  * Author: dedocibula
  * Created on: 25.11.2015.
@@ -11,7 +13,7 @@ public final class MPPCommandFactory {
         return new MPPCommand(Type.GET, key);
     }
 
-    public static <V> MPPCommand newPutCommand(String key, V value) {
+    public static <V extends Serializable> MPPCommand newPutCommand(String key, V value) {
         return new MPPCommand(Type.PUT, key, value);
     }
 

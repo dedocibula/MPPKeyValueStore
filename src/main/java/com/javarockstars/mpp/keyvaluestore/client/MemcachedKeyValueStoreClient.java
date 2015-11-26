@@ -6,6 +6,7 @@ import com.javarockstars.mpp.keyvaluestore.util.SerializationHelper;
 import net.spy.memcached.MemcachedClient;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutionException;
 
@@ -17,41 +18,41 @@ import java.util.concurrent.ExecutionException;
  * @author shivam.maharshi
  */
 public final class MemcachedKeyValueStoreClient implements KeyValueStoreClient {
-	private MemcachedClient client;
+    private MemcachedClient client;
 
-	public MemcachedKeyValueStoreClient(String hostname, int port) throws Exception {
-		client = new MemcachedClient(new InetSocketAddress(hostname, port));
-	}
+    public MemcachedKeyValueStoreClient(String hostname, int port) throws Exception {
+        client = new MemcachedClient(new InetSocketAddress(hostname, port));
+    }
 
-	@Override
-	public <V> V get(String key, Class<V> valueType) {
-		return SerializationHelper.deserialize((byte[]) client.get(key), valueType);
-	}
+    @Override
+    public <V extends Serializable> V get(String key, Class<V> valueType) {
+        return SerializationHelper.deserialize((byte[]) client.get(key), valueType);
+    }
 
-	@Override
-	public <V> boolean add(String key, V value) {
-		boolean result = false;
-		try {
-			result = client.add(key, Constants.TIMEOUT, SerializationHelper.serialize(value)).get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+    @Override
+    public <V extends Serializable> boolean add(String key, V value) {
+        boolean result = false;
+        try {
+            result = client.add(key, Constants.TIMEOUT, SerializationHelper.serialize(value)).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
-	@Override
-	public boolean delete(String key) {
-		boolean result = false;
-		try {
-			result = client.delete(key).get();
-		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+    @Override
+    public boolean delete(String key) {
+        boolean result = false;
+        try {
+            result = client.delete(key).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
-	@Override
-	public void close() throws IOException {
-		client.shutdown();
-	}
+    @Override
+    public void close() throws IOException {
+        client.shutdown();
+    }
 }
