@@ -29,6 +29,11 @@ public final class MPPServer {
 	private final AsynchronousChannelGroup group;
 	private AsynchronousServerSocketChannel serverChannel;
 
+    public MPPServer(final InetSocketAddress address,
+                     final Supplier<MPPCommandProcessor> processorSupplier) throws Exception {
+        this(address, processorSupplier, null);
+    }
+
 	public MPPServer(final InetSocketAddress address,
 					 final Supplier<MPPCommandProcessor> processorSupplier,
 					 final ExecutorService service) throws Exception {

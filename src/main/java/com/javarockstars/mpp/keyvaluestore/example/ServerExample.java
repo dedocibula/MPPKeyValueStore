@@ -24,7 +24,7 @@ public class ServerExample {
                     return null;
             }
         };
-        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> echoProcessor, null);
+        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> echoProcessor);
         server.start();
         System.in.read();
         server.stop();
