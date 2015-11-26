@@ -1,6 +1,9 @@
 package com.javarockstars.mpp.keyvaluestore.example;
 
+import com.javarockstars.mpp.datastructures.api.LockFreeMap;
+import com.javarockstars.mpp.datastructures.implementation.MichaelLockFreeHashMap;
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommandProcessor;
+import com.javarockstars.mpp.keyvaluestore.implementation.MPPLFMapCommandProcessor;
 import com.javarockstars.mpp.keyvaluestore.server.MPPServer;
 
 import java.net.InetSocketAddress;
@@ -24,7 +27,8 @@ public class ServerExample {
                     return null;
             }
         };
-        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> echoProcessor);
+        LockFreeMap<String, Object> lockFreeMap = new MichaelLockFreeHashMap<>(100);
+        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> new MPPLFMapCommandProcessor(lockFreeMap));
         server.start();
         System.in.read();
         server.stop();

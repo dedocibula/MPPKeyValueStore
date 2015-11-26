@@ -9,7 +9,6 @@ import java.util.Objects;
  */
 public final class SerializationHelper {
     public static byte[] serialize(Object obj) {
-        Objects.requireNonNull(obj);
         try (ByteArrayOutputStream byteArrayOut = new ByteArrayOutputStream();
              ObjectOutputStream objectOut = new ObjectOutputStream(byteArrayOut)) {
             objectOut.writeObject(obj);

@@ -165,7 +165,6 @@ public final class MPPClient implements KeyValueStoreClient {
 		}
 
 		private void setResult(T result) {
-			Objects.requireNonNull(result);
 			synchronized (latch) {
 				if (!done && latch.getCount() > 0) {
 					this.result = result;
