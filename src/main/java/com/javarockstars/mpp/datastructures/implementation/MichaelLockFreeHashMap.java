@@ -50,7 +50,7 @@ public final class MichaelLockFreeHashMap<K, V> implements LockFreeMap<K, V> {
         Objects.requireNonNull(key);
         Objects.requireNonNull(value);
         int hash = getHash(key);
-        Node<K, V> node = new Node<K, V>(hash, key, value);
+        Node<K, V> node = new Node<>(hash, key, value);
         if (table[hash].insert(node)) {
             size.incrementAndGet();
             return true;

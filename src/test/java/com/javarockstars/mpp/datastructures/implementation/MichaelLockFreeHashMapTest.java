@@ -38,6 +38,7 @@ public class MichaelLockFreeHashMapTest extends Assert {
         assertThat(map.size(), is(equalTo(2)));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Test
     public void testGet() {
         assertThat(map.size(), is(equalTo(0)));
