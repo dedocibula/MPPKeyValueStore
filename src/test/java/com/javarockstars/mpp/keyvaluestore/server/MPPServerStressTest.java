@@ -29,10 +29,11 @@ public class MPPServerStressTest extends AbstractKVStoreTest {
     private static MPPServer server;
     private static LockFreeMap<String, Serializable> lockFreeMap;
     private static Collection<MPPClient> clients;
-    private static InetSocketAddress address = uniqueAddress();
+    private static InetSocketAddress address;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        address = uniqueAddress();
         executorService = Executors.newFixedThreadPool(10);
         lockFreeMap = new MichaelLockFreeHashMap<>();
         server = new MPPServer(address, () -> new MPPLFMapCommandProcessor(lockFreeMap), Executors.newFixedThreadPool(10));

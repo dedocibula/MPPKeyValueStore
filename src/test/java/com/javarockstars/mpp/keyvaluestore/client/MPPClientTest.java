@@ -17,12 +17,13 @@ import static org.hamcrest.CoreMatchers.notNullValue;
  */
 public class MPPClientTest extends AbstractKVStoreTest {
     private static MPPServer echoServer;
-    private static InetSocketAddress address = uniqueAddress();
+    private static InetSocketAddress address;
 
     private MPPClient client;
 
     @BeforeClass
     public static void setupClass() throws Exception {
+        address = uniqueAddress();
         MPPCommandProcessor echoProcessor = command -> {
             System.out.format("Received command %s\n", command.getType());
             switch (command.getType()) {
