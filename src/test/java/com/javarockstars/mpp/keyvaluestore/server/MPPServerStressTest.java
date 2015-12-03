@@ -2,6 +2,7 @@ package com.javarockstars.mpp.keyvaluestore.server;
 
 import com.javarockstars.mpp.datastructures.api.LockFreeMap;
 import com.javarockstars.mpp.datastructures.implementation.MichaelLockFreeHashMap;
+import com.javarockstars.mpp.keyvaluestore.AbstractKVStoreTest;
 import com.javarockstars.mpp.keyvaluestore.client.MPPClient;
 import com.javarockstars.mpp.keyvaluestore.implementation.MPPLFMapCommandProcessor;
 import org.junit.*;
@@ -23,12 +24,12 @@ import static org.hamcrest.CoreMatchers.not;
  * Author: dedocibula
  * Created on: 26.11.2015.
  */
-public class MPPServerStressTest extends Assert {
+public class MPPServerStressTest extends AbstractKVStoreTest {
     private static ExecutorService executorService;
     private static MPPServer server;
     private static LockFreeMap<String, Serializable> lockFreeMap;
     private static Collection<MPPClient> clients;
-    private static InetSocketAddress address = new InetSocketAddress("localhost", 1234);
+    private static InetSocketAddress address = uniqueAddress();
 
     @BeforeClass
     public static void setUpClass() throws Exception {

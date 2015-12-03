@@ -19,6 +19,7 @@ dependencies {
 }
 
 test {
+    exclude "**/JUnitTestSuite.class"
     testLogging {
         events "failed", "passed"
         exceptionFormat "short"

@@ -1,5 +1,6 @@
 package com.javarockstars.mpp.keyvaluestore.client;
 
+import com.javarockstars.mpp.keyvaluestore.AbstractKVStoreTest;
 import com.javarockstars.mpp.keyvaluestore.command.MPPCommandProcessor;
 import com.javarockstars.mpp.keyvaluestore.server.MPPServer;
 import org.junit.*;
@@ -14,9 +15,9 @@ import static org.hamcrest.CoreMatchers.notNullValue;
  * Author: dedocibula
  * Created on: 26.11.2015.
  */
-public class MPPClientTest extends Assert {
+public class MPPClientTest extends AbstractKVStoreTest {
     private static MPPServer echoServer;
-    private static InetSocketAddress address = new InetSocketAddress("localhost", 1234);
+    private static InetSocketAddress address = uniqueAddress();
 
     private MPPClient client;
 
