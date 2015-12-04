@@ -7,6 +7,7 @@ import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Objects;
 
@@ -47,4 +48,25 @@ public final class RedisKeyValueStoreClient implements KeyValueStoreClient {
     public void close() throws IOException {
         client.close();
     }
+    
+    public static void main(String[] args) {
+		InetSocketAddress address;
+		RedisKeyValueStoreClient client;
+		try {
+			address = new InetSocketAddress(InetAddress.getLocalHost(), 6379);
+			client = new RedisKeyValueStoreClient(address);
+			client.add("a", "1");
+			client.add("b", "2");
+
+			long m = System.currentTimeMillis();
+			while (System.currentTimeMillis() < m + 50000) {
+				client.add("a" + Math.random(), "1");
+			}
+			System.out.println(client.get("a", String.class));
+			System.out.println(client.get("b", String.class));
+			System.out.println("Done");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

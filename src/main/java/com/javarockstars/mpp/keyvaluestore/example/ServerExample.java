@@ -14,8 +14,8 @@ import java.net.InetSocketAddress;
  */
 public class ServerExample {
     public static void main(String[] args) throws Exception {
-        LockFreeMap<String, Serializable> lockFreeMap = new MichaelLockFreeHashMap<>(100);
-        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> new MPPLFMapCommandProcessor(lockFreeMap));
+        LockFreeMap<String, Serializable> lockFreeMap = new MichaelLockFreeHashMap<>(10000);
+        MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9988), () -> new MPPLFMapCommandProcessor(lockFreeMap));
         server.start();
         System.in.read();
         server.stop();
