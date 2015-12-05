@@ -1,6 +1,6 @@
 package com.javarockstars.mpp.keyvaluestore.example;
 
-import com.javarockstars.mpp.datastructures.util.Constants;
+import com.javarockstars.mpp.benchmarks.BenchmarkConstants;
 import com.javarockstars.mpp.keyvaluestore.client.MPPClient;
 
 import java.net.InetSocketAddress;
@@ -22,7 +22,7 @@ public class ClientExample {
 		});
 		MPPClient client = new MPPClient(new InetSocketAddress("localhost", 9988));
 		for (int i = 0; i < 10000; i++) {
-			String key = "" + (int) (Math.random() * Constants.MAX_KEY);
+			String key = "" + (int) (Math.random() * BenchmarkConstants.MAX_KEY);
 			System.out.println("Key : " + key);
 			System.out.println(client.add(key, DUMMY_DATA));
 		}

@@ -1,4 +1,4 @@
-package com.javarockstars.mpp.datastructures.util;
+package com.javarockstars.mpp.benchmarks.keyvaluestore;
 
 import java.net.InetSocketAddress;
 

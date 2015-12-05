@@ -1,17 +1,18 @@
 package com.javarockstars.mpp.benchmarks.keyvaluestore;
 
-import static com.javarockstars.mpp.datastructures.util.Constants.DELETE;
-import static com.javarockstars.mpp.datastructures.util.Constants.DUMMY_DATA;
-import static com.javarockstars.mpp.datastructures.util.Constants.HOST;
-import static com.javarockstars.mpp.datastructures.util.Constants.OPERATION;
-import static com.javarockstars.mpp.datastructures.util.Constants.PORT;
-import static com.javarockstars.mpp.datastructures.util.Constants.PUT;
-import static com.javarockstars.mpp.datastructures.util.Constants.STORE_TYPE;
-import static com.javarockstars.mpp.datastructures.util.Constants.SUCCESS_MESSAGE;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.DELETE;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.DUMMY_DATA;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.HOST;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.OPERATION;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.PORT;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.PUT;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.STORE_TYPE;
+import static com.javarockstars.mpp.benchmarks.BenchmarkConstants.SUCCESS_MESSAGE;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetSocketAddress;
+import java.util.Random;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.jmeter.config.Arguments;
@@ -19,8 +20,7 @@ import org.apache.jmeter.protocol.java.sampler.AbstractJavaSamplerClient;
 import org.apache.jmeter.protocol.java.sampler.JavaSamplerContext;
 import org.apache.jmeter.samplers.SampleResult;
 
-import com.javarockstars.mpp.datastructures.util.Constants;
-import com.javarockstars.mpp.datastructures.util.KeyValueStoreType;
+import com.javarockstars.mpp.benchmarks.BenchmarkConstants;
 import com.javarockstars.mpp.keyvaluestore.api.KeyValueStoreClient;
 
 /**
@@ -51,7 +51,7 @@ public class KeyValueStoreTest extends AbstractJavaSamplerClient implements Seri
 		String host = context.getParameter(HOST);
 		int port = Integer.valueOf(context.getParameter(PORT));
 		InetSocketAddress add = new InetSocketAddress(host, port);
-		KeyValueStoreType storeType = KeyValueStoreType.getEnum(context.getParameter(STORE_TYPE));
+		KeyValueStoreType storeType = KeyValueStoreType.valueOf(context.getParameter(STORE_TYPE).toUpperCase());
 		KeyValueStoreClient client;
 		try {
 			client = storeType.getClient(add);
@@ -70,7 +70,7 @@ public class KeyValueStoreTest extends AbstractJavaSamplerClient implements Seri
 	 * @throws IOException
 	 */
 	private SampleResult executeOperation(KeyValueStoreClient client, String operation) throws IOException {
-		String key = "" + (int) (Math.random() * Constants.MAX_KEY);
+		String key = "" + (int) (Math.random() * BenchmarkConstants.MAX_KEY);
 		if (operation.equalsIgnoreCase(PUT)) {
 			return executePutOperation(client, key, DUMMY_DATA);
 		} else if (operation.equalsIgnoreCase(DELETE)) {
@@ -154,6 +154,18 @@ public class KeyValueStoreTest extends AbstractJavaSamplerClient implements Seri
 		result.setDataType(org.apache.jmeter.samplers.SampleResult.TEXT);
 		result.setResponseCode("500");
 		return result;
+	}
+
+	public static void main(String[] args) {
+		long seed = System.nanoTime();
+		Random r1 = new Random(seed);
+		Random r2 = new Random(seed);
+		Random r3 = new Random(seed);
+		for (int i = 0; i < 10; i++) {
+			System.out.println(r1.nextDouble());
+			System.out.println(r2.nextDouble());
+			System.out.println(r3.nextDouble());
+		}
 	}
 
 }
