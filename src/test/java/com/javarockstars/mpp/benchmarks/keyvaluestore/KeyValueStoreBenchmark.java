@@ -41,9 +41,7 @@ public abstract class KeyValueStoreBenchmark extends AbstractJavaSamplerClient i
         int port = Integer.valueOf(context.getParameter(PORT));
         InetSocketAddress add = new InetSocketAddress(host, port);
         KeyValueStoreType storeType = KeyValueStoreType.valueOf(context.getParameter(STORE_TYPE).toUpperCase());
-        KeyValueStoreClient client;
-        try {
-            client = storeType.getClient(add);
+        try (KeyValueStoreClient client = storeType.getClient(add)) {
             return executeOperation(client, context.getParameter(OPERATION));
         } catch (Exception e) {
             return handleException(e);
@@ -83,7 +81,6 @@ public abstract class KeyValueStoreBenchmark extends AbstractJavaSamplerClient i
         String response = client.get(key, String.class);
         result.setResponseData(response != null ? response : "Key absent !", null);
         result.sampleEnd();
-        client.close();
         result.setSuccessful(true);
         result.setResponseMessage(SUCCESS_MESSAGE);
         result.setResponseCodeOK();
