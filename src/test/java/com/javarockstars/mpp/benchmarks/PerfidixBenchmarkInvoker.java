@@ -22,7 +22,7 @@ import java.util.Objects;
  *
  * @author shivam.maharshi
  */
-public class BenchmarkInvoker {
+public class PerfidixBenchmarkInvoker {
     public static void main(String[] args) throws IOException {
         Benchmark benchmark = new Benchmark(new BenchmarkConfig());
         benchmark.add(ConcurrentHashMapBenchmark.class);

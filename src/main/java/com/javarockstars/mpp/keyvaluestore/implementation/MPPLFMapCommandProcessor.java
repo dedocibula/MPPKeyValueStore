@@ -11,7 +11,7 @@ import java.util.Objects;
  * Author: dedocibula
  * Created on: 25.11.2015.
  */
-public class MPPLFMapCommandProcessor implements MPPCommandProcessor {
+public final class MPPLFMapCommandProcessor implements MPPCommandProcessor {
     private final LockFreeMap<String, Serializable> lockFreeMap;
 
     public MPPLFMapCommandProcessor(final LockFreeMap<String, Serializable> lockFreeMap) {
