@@ -17,9 +17,8 @@ public final class KeyValueStoreOperationGenerator {
 
     public static List<Pair<KeyValueStoreOperation, String>> retrieve(int gets, int adds, int deletes) {
         validate(gets, adds, deletes);
-        final String fileName = String.format("%s%s_%s_%s", fileNamePrefix, gets, adds, deletes);
         List<Pair<KeyValueStoreOperation, String>> pairs = new ArrayList<>();
-        try (BufferedReader r = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader r = new BufferedReader(new FileReader(getOrCreateFile(gets, adds, deletes)))) {
             String line;
             while ((line = r.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -34,10 +33,11 @@ public final class KeyValueStoreOperationGenerator {
     public static void generate(int gets, int adds, int deletes) {
         validate(gets, adds, deletes);
         List<Pair<KeyValueStoreOperation, String>> pairs = doMagic(gets, adds, deletes);
-        final String fileName = String.format("%s%s_%s_%s", fileNamePrefix, gets, adds, deletes);
-        try (OutputStreamWriter s = outputStream(fileName)) {
-            for (Pair<KeyValueStoreOperation, String> pair : pairs)
-                s.write(String.format("%s,%s\n", pair.first, pair.second));
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(getOrCreateFile(gets, adds, deletes)))) {
+            for (Pair<KeyValueStoreOperation, String> pair : pairs) {
+                w.write(String.format("%s,%s", pair.first, pair.second));
+                w.newLine();
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -107,14 +107,13 @@ public final class KeyValueStoreOperationGenerator {
         return new Pair<>(operation, keys.remove(current));
     }
 
-    private static OutputStreamWriter outputStream(final String fileName) throws IOException {
-        Objects.requireNonNull(fileName);
+    private static File getOrCreateFile(int gets, int adds, int deletes) throws IOException {
+        final String fileName = String.format("%s%s_%s_%s", fileNamePrefix, gets, adds, deletes);
         File currentDirectory = new File(System.getProperty("user.dir"));
-        File newFile = new File(currentDirectory, fileName);
-        if (newFile.exists())
-            return new OutputStreamWriter(newFile.isDirectory() || !newFile.canWrite() ? System.out : new FileOutputStream(newFile));
-        else
-            return new OutputStreamWriter(newFile.createNewFile() ? new FileOutputStream(newFile) : System.out);
+        File file = new File(currentDirectory, fileName);
+        if (!file.exists() && !file.createNewFile())
+            throw new IllegalArgumentException("fileName");
+        return file;
     }
 
     private static void validate(int gets, int adds, int deletes) {
