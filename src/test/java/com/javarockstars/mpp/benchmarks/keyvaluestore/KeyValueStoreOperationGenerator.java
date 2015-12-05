@@ -49,7 +49,7 @@ public final class KeyValueStoreOperationGenerator {
         int[] getDistribution = distribute(operations, 0), addDistribution = distribute(operations, 1), deleteDistribution = distribute(operations, 2);
         int[] getKeys = Arrays.copyOf(addDistribution, 2);
         List<String> addKeys = IntStream.range(0, addDistribution[0] + addDistribution[1])
-                .mapToObj(Integer::toString)
+                .mapToObj(i -> Integer.toString(i % addDistribution[0]))
                 .collect(Collectors.toList());
         List<String> deleteKeys = IntStream.range(0, deleteDistribution[0] + deleteDistribution[1])
                 .mapToObj(i -> (i < deleteDistribution[0]) ? Integer.toString(i) : Integer.toString(addDistribution[0] + i))
