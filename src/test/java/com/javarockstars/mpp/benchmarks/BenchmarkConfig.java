@@ -10,7 +10,7 @@ import java.util.Set;
 
 /**
  * Custom config for benchmarks.
- *
+ * <p>
  * Author: dedocibula
  * Created on: 24.11.2015.
  */
@@ -25,7 +25,7 @@ public class BenchmarkConfig extends AbstractConfig {
 
     static {
         METERS.add(new TimeMeter(Time.MilliSeconds));
-        METERS.add(new MemMeter(Memory.Byte));
+        METERS.add(new MemMeter(Memory.Mebibyte));
     }
 
     public BenchmarkConfig() {

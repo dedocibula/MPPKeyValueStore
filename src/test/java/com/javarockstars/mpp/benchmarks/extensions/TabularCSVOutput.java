@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Custom tabular CSV output for benchmark results. Supports grouping
  * and dumping to file.
- *
+ * <p>
  * Author: dedocibula
  * Created on: 23.11.2015.
  */
@@ -43,7 +43,6 @@ public final class TabularCSVOutput extends AbstractOutput {
     }
 
     /**
-     *
      * @return new output redirecting processed results to System.out
      */
     public static TabularCSVOutput toConsole() {
@@ -51,7 +50,6 @@ public final class TabularCSVOutput extends AbstractOutput {
     }
 
     /**
-     *
      * @param out print stream (destination)
      * @return new output redirecting processed results to given print stream
      */
@@ -60,7 +58,6 @@ public final class TabularCSVOutput extends AbstractOutput {
     }
 
     /**
-     *
      * @param resultGrouping enum dictating how should the results be ordered
      * @return output
      */
@@ -78,9 +75,11 @@ public final class TabularCSVOutput extends AbstractOutput {
         addHeader("BENCHMARK", Alignment.Center);
         emptyRow();
         addRow("-", "unit", "sum", "min", "max", "avg", "stddev", "conf95", "runs");
+        emptyRow();
 
         // generate metrics by benchmark
         for (final AbstractMeter meter : res.getRegisteredMeters()) {
+            addHeader(meter.getName(), Alignment.Center);
             if (resultGrouping == Grouping.METHOD)
                 generateMetricsByMethod(meter, res);
             else
@@ -142,7 +141,7 @@ public final class TabularCSVOutput extends AbstractOutput {
     /**
      * Outputs benchmark metrics grouped by class.
      *
-     * @param meter current meter
+     * @param meter  current meter
      * @param result benchmark result
      */
     private void generateMetricsByClass(final AbstractMeter meter, final BenchmarkResult result) {
@@ -164,7 +163,7 @@ public final class TabularCSVOutput extends AbstractOutput {
     /**
      * Outputs benchmark metrics grouped by method.
      *
-     * @param meter current meter
+     * @param meter  current meter
      * @param result benchmark result
      */
     private void generateMetricsByMethod(final AbstractMeter meter, final BenchmarkResult result) {
@@ -189,8 +188,8 @@ public final class TabularCSVOutput extends AbstractOutput {
      * Outputs one row corresponding to one benchmark result.
      *
      * @param columnDesc column description
-     * @param meter current meter
-     * @param result benchmark result
+     * @param meter      current meter
+     * @param result     benchmark result
      */
     private void generateMeterResult(final String columnDesc, final AbstractMeter meter, final AbstractResult result) {
         addRow(columnDesc,
@@ -207,7 +206,7 @@ public final class TabularCSVOutput extends AbstractOutput {
     /**
      * Outputs header with specific alignment.
      *
-     * @param title header title
+     * @param title     header title
      * @param alignment alignment
      */
     private void addHeader(final String title, final Alignment alignment) {
@@ -235,7 +234,7 @@ public final class TabularCSVOutput extends AbstractOutput {
     private void emptyRow() {
         out.println();
     }
-    
+
     public enum Grouping {
         CLASS,
         METHOD
