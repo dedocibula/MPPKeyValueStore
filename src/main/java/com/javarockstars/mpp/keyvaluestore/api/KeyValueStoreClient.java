@@ -5,15 +5,14 @@ import java.io.Serializable;
 
 /**
  * This class represents the operations offered by our basic key value server.
- * 
- * @author shivam.maharshi
  *
+ * @author shivam.maharshi
  */
 public interface KeyValueStoreClient extends Closeable {
 
-	<V extends Serializable> V get(final String key, final Class<V> valueType);
+    <V extends Serializable> V get(final String key, final Class<V> valueType);
 
-	<V extends Serializable> boolean add(final String key, final V value);
+    <V extends Serializable> boolean add(final String key, final V value);
 
-	boolean delete(final String key);
+    boolean delete(final String key);
 }

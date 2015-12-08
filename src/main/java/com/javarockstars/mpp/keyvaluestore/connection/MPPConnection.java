@@ -11,28 +11,28 @@ import java.util.Objects;
  * Created on: 25.11.2015.
  */
 public final class MPPConnection {
-	private AsynchronousSocketChannel client;
+    private AsynchronousSocketChannel client;
     private boolean isRead;
     private final ByteBuffer readWriteBuffer;
 
-	MPPConnection(final AsynchronousSocketChannel client) {
-		Objects.requireNonNull(client);
-		this.client = client;
-		this.readWriteBuffer = ByteBuffer.allocateDirect(Constants.BUFFER_SIZE);
+    MPPConnection(final AsynchronousSocketChannel client) {
+        Objects.requireNonNull(client);
+        this.client = client;
+        this.readWriteBuffer = ByteBuffer.allocateDirect(Constants.BUFFER_SIZE);
         this.isRead = true;
-	}
+    }
 
-	void setSocketAddress(AsynchronousSocketChannel newClient) {
-		this.client = newClient;
-	}
+    void setSocketAddress(AsynchronousSocketChannel newClient) {
+        this.client = newClient;
+    }
 
-	public AsynchronousSocketChannel getClient() {
-		return client;
-	}
+    public AsynchronousSocketChannel getClient() {
+        return client;
+    }
 
-	public ByteBuffer getReadWriteBuffer() {
-		return readWriteBuffer;
-	}
+    public ByteBuffer getReadWriteBuffer() {
+        return readWriteBuffer;
+    }
 
     public boolean isRead() {
         return isRead;
