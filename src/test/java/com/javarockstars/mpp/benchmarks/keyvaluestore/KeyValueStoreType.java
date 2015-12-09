@@ -29,7 +29,7 @@ public enum KeyValueStoreType {
             case MPP:
                 return new MPPClient(address);
             default:
-                throw new RuntimeException("Invalid key value store type.");
+                throw new IllegalStateException("Invalid key value store type.");
         }
     }
 

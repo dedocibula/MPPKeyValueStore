@@ -133,4 +133,8 @@ public final class KeyValueStoreOperationGenerator {
             this.second = second;
         }
     }
+
+    public enum KeyValueStoreOperation {
+        GET, ADD, DELETE
+    }
 }

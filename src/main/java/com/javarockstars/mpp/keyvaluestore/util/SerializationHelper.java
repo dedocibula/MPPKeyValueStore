@@ -1,7 +1,6 @@
 package com.javarockstars.mpp.keyvaluestore.util;
 
 import java.io.*;
-import java.util.Objects;
 
 /**
  * Author: dedocibula
@@ -20,7 +19,7 @@ public final class SerializationHelper {
     }
 
     public static <T extends Serializable> T deserialize(byte[] objectBytes, Class<T> type) {
-        Objects.requireNonNull(objectBytes);
+        if (objectBytes == null) return null;
         try (ByteArrayInputStream byteArrayIn = new ByteArrayInputStream(objectBytes);
              ObjectInputStream objectIn = new ObjectInputStream(byteArrayIn)) {
             //noinspection unchecked

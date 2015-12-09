@@ -16,10 +16,6 @@ dependencies {
 
     testCompile group: 'junit', name: 'junit', version: '4.11'
     testCompile group: 'org.perfidix', name: 'perfidix', version: '3.6.9'
-    testCompile(group: 'org.apache.jmeter', name: 'ApacheJMeter_java', version: '2.13') {
-        exclude group: 'commons-math3', module: 'commons-math3'
-        exclude group: 'commons-pool2', module: 'commons-pool2'
-    }
 }
 
 test {

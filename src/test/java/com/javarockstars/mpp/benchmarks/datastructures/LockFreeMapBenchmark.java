@@ -16,17 +16,17 @@ import java.util.stream.IntStream;
  * Created on: 23.11.2015.
  */
 public abstract class LockFreeMapBenchmark {
-    private LockFreeMap<String, String> lockFreeMap;
+    private final LockFreeMap<String, String> lockFreeMap;
 
     private ExecutorService executorService;
     private Collection<Callable<Void>> actions;
 
-    public LockFreeMapBenchmark(LockFreeMap<String, String> lockFreeMap) {
+    public LockFreeMapBenchmark(final LockFreeMap<String, String> lockFreeMap) {
         this.lockFreeMap = lockFreeMap;
     }
 
     protected void setupBenchmark() {
-        executorService = Executors.newFixedThreadPool(BenchmarkConstants.CONCURRENCY);
+        executorService = Executors.newFixedThreadPool(BenchmarkConstants.THREAD_CONCURRENCY);
         actions = new ArrayList<>();
     }
 
@@ -38,10 +38,10 @@ public abstract class LockFreeMapBenchmark {
     protected void fillMap() {
         for (int i = 0; i < BenchmarkConstants.MAX_KEY; i++) {
             /*
-             * Convert integer to string to generate hash code and thereby
-             * increasing the chances of collisions. Hence replicating real life
-             * scenarios.
-             */
+			 * Convert integer to string to generate hash code and thereby
+			 * increasing the chances of collisions. Hence replicating real life
+			 * scenarios.
+			 */
             lockFreeMap.put(randomize(i), BenchmarkConstants.DUMMY_VALUE);
         }
     }
@@ -68,7 +68,7 @@ public abstract class LockFreeMapBenchmark {
 
     protected void setupActions(Runnable action) {
         actions.clear();
-        IntStream.range(0, BenchmarkConstants.CONCURRENCY)
+        IntStream.range(0, BenchmarkConstants.THREAD_CONCURRENCY)
                 .mapToObj(i -> (Callable) Executors.callable(action))
                 .forEach(actions::add);
     }

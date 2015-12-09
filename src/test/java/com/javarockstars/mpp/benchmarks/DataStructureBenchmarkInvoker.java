@@ -22,16 +22,16 @@ import java.util.Objects;
  *
  * @author shivam.maharshi
  */
-public class PerfidixBenchmarkInvoker {
+public class DataStructureBenchmarkInvoker {
     public static void main(String[] args) throws IOException {
-        Benchmark benchmark = new Benchmark(new BenchmarkConfig());
+        Benchmark benchmark = new Benchmark(new BenchmarkConfig(10));
         benchmark.add(ConcurrentHashMapBenchmark.class);
         benchmark.add(MichaelLockFreeHashMapBenchmark.class);
         benchmark.add(ConcurrentSkipListHashMapBenchmark.class);
         benchmark.add(NonBlockingHashMapBenchmark.class);
         BenchmarkResult result = benchmark.run();
 //        new TabularSummaryOutput(printStream("benchmark.txt")).visitBenchmark(result);
-        TabularCSVOutput.toStream(printStream("benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
+        TabularCSVOutput.toStream(printStream("maps-benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
     }
 
     private static PrintStream printStream(final String fileName) throws IOException {

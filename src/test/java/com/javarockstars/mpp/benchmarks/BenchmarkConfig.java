@@ -16,7 +16,6 @@ import java.util.Set;
  */
 @org.perfidix.annotation.BenchmarkConfig
 public class BenchmarkConfig extends AbstractConfig {
-    private final static int RUNS = 10;
     private final static Set<AbstractMeter> METERS = new HashSet<>();
     private final static Set<AbstractOutput> OUTPUT = new HashSet<>();
 
@@ -28,7 +27,7 @@ public class BenchmarkConfig extends AbstractConfig {
         METERS.add(new MemMeter(Memory.Mebibyte));
     }
 
-    public BenchmarkConfig() {
-        super(RUNS, METERS, OUTPUT, ARRANGEMENT, GCPROB);
+    public BenchmarkConfig(int runs) {
+        super(runs, METERS, OUTPUT, ARRANGEMENT, GCPROB);
     }
 }
