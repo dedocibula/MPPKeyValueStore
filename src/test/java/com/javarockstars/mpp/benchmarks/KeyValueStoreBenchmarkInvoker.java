@@ -23,9 +23,7 @@ import java.util.Objects;
  */
 public class KeyValueStoreBenchmarkInvoker {
     public static void main(String[] args) throws IOException {
-        // Invoke once to generate initial random data for different percentages
-        // of operations.
-//        generateOperations();
+        generateRandomOperations();
 
         Benchmark benchmark = new Benchmark(new BenchmarkConfig(1));
         benchmark.add(MPPStoreBenchmark.class);
@@ -35,7 +33,7 @@ public class KeyValueStoreBenchmarkInvoker {
         TabularCSVOutput.toStream(printStream("stores-benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
     }
 
-    private static void generateOperations() {
+    private static void generateRandomOperations() {
         KeyValueStoreOperationGenerator.generate(100, 0, 0);
         dump(KeyValueStoreOperationGenerator.retrieve(100, 0, 0));
 

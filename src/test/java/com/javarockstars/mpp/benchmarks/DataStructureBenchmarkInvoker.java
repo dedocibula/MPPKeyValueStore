@@ -30,7 +30,6 @@ public class DataStructureBenchmarkInvoker {
         benchmark.add(ConcurrentSkipListHashMapBenchmark.class);
         benchmark.add(NonBlockingHashMapBenchmark.class);
         BenchmarkResult result = benchmark.run();
-//        new TabularSummaryOutput(printStream("benchmark.txt")).visitBenchmark(result);
         TabularCSVOutput.toStream(printStream("maps-benchmark.csv")).groupBy(Grouping.METHOD).visitBenchmark(result);
     }
 
