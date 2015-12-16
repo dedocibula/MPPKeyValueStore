@@ -47,7 +47,7 @@ public final class MPPServer {
     public void start() throws Exception {
         synchronized (address) {
             if (serverChannel == null) {
-                System.out.format("Starting server. Server is listening at %s%n\n", address);
+                System.out.format("Starting server. Server is listening at %s.\n", address);
                 serverChannel = AsynchronousServerSocketChannel.open(group).bind(address);
                 serverChannel.accept(serverChannel, new MPPConnectionHandler(processorSupplier));
             }

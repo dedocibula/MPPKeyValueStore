@@ -17,6 +17,7 @@ public final class ServerExample {
         LockFreeMap<String, Serializable> lockFreeMap = new MichaelLockFreeHashMap<>(100);
         MPPServer server = new MPPServer(new InetSocketAddress("localhost", 9999), () -> new MPPLFMapCommandProcessor(lockFreeMap));
         server.start();
+        System.out.println("Press <Enter> to stop the server.");
         System.in.read();
         server.stop();
     }
