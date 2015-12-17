@@ -43,20 +43,14 @@ Alternatively, you can start the server directly from your IDE. See [examples](#
 
 MPP store also comes with sample programs in the `example` directory.
 
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
-.tg .tg-yw4l{vertical-align:top}
-</style>
-<table class="tg">
+<table class=>
   <tr>
-    <th class="tg-yw4l">Server</th>
-    <td class="tg-yw4l"><a href="https://github.com/dedocibula/MPPKeyValueStore/blob/master/src/main/java/com/javarockstars/mpp/keyvaluestore/example/ServerExample.java">com.javarockstars.mpp.keyvaluestore.example.ServerExample</a></td>
+    <th>Server</th>
+    <td><a href="https://github.com/dedocibula/MPPKeyValueStore/blob/master/src/main/java/com/javarockstars/mpp/keyvaluestore/example/ServerExample.java">com.javarockstars.mpp.keyvaluestore.example.ServerExample</a></td>
   </tr>
   <tr>
-    <th class="tg-yw4l">Client</th>
-    <td class="tg-yw4l"><a href="https://github.com/dedocibula/MPPKeyValueStore/blob/master/src/main/java/com/javarockstars/mpp/keyvaluestore/example/ClientExample.java">com.javarockstars.mpp.keyvaluestore.example.ClientExample</a></td>
+    <th>Client</th>
+    <td><a href="https://github.com/dedocibula/MPPKeyValueStore/blob/master/src/main/java/com/javarockstars/mpp/keyvaluestore/example/ClientExample.java">com.javarockstars.mpp.keyvaluestore.example.ClientExample</a></td>
   </tr>
 </table>
 
